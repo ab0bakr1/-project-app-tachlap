@@ -1,0 +1,363 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+li{
+    list-style: none;
+}
+a{
+    text-decoration: none!important;
+}
+/* header */
+header{
+    border-bottom: 1px solid #ccc;
+    background-color: #fefefe;
+}
+.logo h4{
+    font-size: clamp(1.5rem, 2vw, 2.3rem);
+    font-weight: 700;
+    color: blueviolet;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+.logo h4 span{
+    color: grey;
+}
+nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+.user{
+    display: flex;
+}
+#user-in{
+    display: none;
+}
+.user li a,
+#user-in li a{
+    text-transform: capitalize;
+    font-size: clamp(1.2rem, 1.6vw, 2rem);
+    font-weight: 400;
+    color: grey;
+    position: relative;
+    cursor: pointer;
+    text-shadow: 1px 1px 0px rgba(137, 43, 226, 0.733);
+}
+.user li a::after{
+    content: "";
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 2px;
+    left: 0;
+    bottom: -8px;
+    background: blueviolet;
+    transition: 0.4s;
+}
+.user li a:hover::after{
+    width: 100%;
+}
+#logout::after {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 2px;
+    left: 0;
+    bottom: -8px;
+    background: red;
+    transition: 0.4s;
+}
+#logout:hover::after {
+    width: 100%;
+}   
+#logout:hover{
+    color: red;
+    text-shadow: 1px 1px 0px red;
+}
+.cart{
+    position: relative;
+    height: 45px;
+}
+.cart span{
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    text-align: center;
+    background-color: blueviolet;
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+    transform: translateY(50%);
+}
+.cart i{
+    cursor: pointer;
+    font-size: 1.5rem;
+    transform: translateY(50%);
+}
+.cart-product{
+    display: none;
+    position: absolute;
+    width: 250px;
+    right: 10px;
+    top:50px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+.cart-product li{
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    height: 80px;
+}
+.cart-product li img{
+    width: 40%;
+    height: 100%;
+    object-fit: contain;
+}
+.cart-product li h5{
+    font-size:clamp(0.6rem, .8vw, 1rem);
+    font-weight: 600;
+    text-transform: capitalize;
+    width: 100%;
+    color: blueviolet;
+}
+.cart-product li h4{
+    font-size:clamp(0.6rem, .8vw, 1rem);
+    font-weight: 300;
+    text-transform: capitalize;
+    width: 100%;
+    margin: 0;
+}
+.cart-product li i{
+    background-color: blueviolet;
+    color: #fff;
+    border-radius: 50%;
+    padding: 1px;
+}
+.cart-product a{
+    color: blueviolet;
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-transform: capitalize;
+    width: 100%;
+}
+.fav{
+    position: relative;
+    height: 45px;
+}
+.fav span{
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    text-align: center;
+    background-color: blueviolet;
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+    transform: translateY(50%);
+}
+.fav i{
+    cursor: pointer;
+    font-size: 1.5rem;
+    transform: translateY(50%);
+}
+.fav-product{
+    display: none;
+    position: absolute;
+    width: 250px;
+    right: 10px;
+    top:50px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+.fav-product li{
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    height: 80px;
+}
+.fav-product li img{
+    width: 40%;
+    height: 100%;
+    object-fit: contain;
+}
+.fav-product li h5{
+    font-size:clamp(0.6rem, .8vw, 1rem);
+    font-weight: 600;
+    text-transform: capitalize;
+    color: blueviolet;
+    width: 100%;
+}
+.fav-product li h4{
+    font-size:clamp(0.6rem, .8vw, 1rem);
+    font-weight: 400;
+    text-transform: capitalize;
+    width: 100%;
+}
+/* header end */
+
+
+
+
+/* login and register */
+.user-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100svh;
+    background-color: #eee;
+}
+form{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    min-height: 40svh;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 2rem;
+}
+form h3{
+    font-size: clamp(1.5rem, 3vw, 3.5rem);
+    font-weight: 700;
+    color: blueviolet;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 500;
+}
+form input{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+form input:focus{
+    outline: 1px solid blueviolet;
+}
+form button{
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: blueviolet;
+    color: #fff;
+    font-weight: 500;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0px;
+    transition: 0.4s;
+}
+form button:hover{
+    background-color: rgba(137, 43, 226, 0.733);
+    letter-spacing: 4px;
+}
+form p{
+    font-size: clamp(.8rem, 1vw, 1.3rem);
+    font-weight: 400;
+    color: grey;
+    text-transform: capitalize;
+}
+form p a{
+    color: blueviolet;
+    font-weight: 500;
+    transition: 0.4s;
+    text-transform: uppercase;
+}
+#error{
+    display: none;
+    text-transform: capitalize;
+    text-align: center;
+    width: 100%;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    background-color: red;
+    font-size: clamp(1rem, 1.5vw, 1.5rem);
+    font-weight: 500;
+}
+/* login and register end */
+
+/* All-Lap */
+.cards{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 2.5rem;
+    padding: 1rem;
+}
+.card{
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    text-align: center;
+    outline: blueviolet solid 1px;
+}
+.card h5 {
+    font-size: clamp(0.8rem, 0.9vw, 1.3rem);
+    font-weight: 700;
+    color: blueviolet;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+.card p{
+    font-size: clamp(0.8rem, 0.9vw, 1.3rem);
+    font-weight: 400;
+    color: grey;
+    text-transform: capitalize;
+}
+.card a{
+    padding: 5px 20px;
+    border: none;
+    background-color: blueviolet;
+    color: white;
+    font-weight: 500;
+    transition: 0.4s;
+    text-transform: uppercase;
+}
+.card a:hover{
+    background-color: rgba(137, 43, 226, 0.733);
+}
+/* All-Lpa end */
+
+#cards2{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 2.5rem;
+    padding: 1rem;
+}
+
+
+/* cartlist */
+
+.cartlist{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+}
+/* cartlist end */
