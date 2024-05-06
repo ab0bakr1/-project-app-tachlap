@@ -303,73 +303,66 @@ let AllLap = [
         image:"https://www.jarir.com/cdn-cgi/image/fit=contain,width=380,height=auto,quality=85,metadata=none/https://ak-asset.jarir.com/akeneo-prod/asset/b/b/e/a/bbea4973490db83ad20904c192554c91d9a63ca5_621025.jpg"
     }
 ]
-
-function SearchLap (){
-    Search.innerHTML =`
-    <div>
+let addCart = localStorage.getItem("addCart")?JSON.parse(localStorage.getItem("addCart")):[];
+let addfav = localStorage.getItem("addfav")?JSON.parse(localStorage.getItem("addfav")):[];
+let y = AllLap
+if(Cards){
+    function SearchLap (){
+        Search.innerHTML =`
         <input type="text" id="search" onKeyUp="SearchShow()" placeholder="search"  />
-        <butten onClick="SearchShow()">ddd</butten>
-    </div>
-    <div>
-        <select>
-            <option value="make">company</option>
+        <select id="select">
             <option value="name">name</option>
+            <option value="make">company</option>
             <option value="price">price</option>
         </select>
-    </div>
-    `
+        `
+    }
+    SearchLap();
 }
-SearchLap();
 
 function SearchShow (){
     let searchitem = document.getElementById("search").value.toLowerCase();
-    let product = AllLap.map((item)=>item.name.toLowerCase())
-    for(let i = 0 ; i<showitem.length; i){
-        showitem.shift();
-
+    let Select = document.getElementById("select").value;
+    if(Select == "name"){
+        AllLap = AllLap.filter((ele)=>{
+            return ele.name.toLocaleLowerCase().includes(searchitem)
+        })
+    }else if(Select == "make"){
+        AllLap = AllLap.filter((ele)=>{
+            return ele.make.toLocaleLowerCase().includes(searchitem)
+        })
+    }else if(Select == "price"){
+        AllLap = AllLap.filter((ele)=>{
+            return ele.price <= searchitem
+        })
     }
+    Cards.innerHTML = []
     ShowLap ()
-    console.log(showitem)
-    for(let i = 0 ; i<product.length; i++){
-        if(product[i].indexOf(searchitem) >= 0){
-            let showitem1 = AllLap.find((item)=>item.name.toLowerCase() == product[i])
-            showitem.push(showitem1);
-        }
-    } 
-    ShowLap ()
-    console.log(showitem)
 }
 
-
-let addCart = localStorage.getItem("addCart")?JSON.parse(localStorage.getItem("addCart")):[];
-let addfav = localStorage.getItem("addfav")?JSON.parse(localStorage.getItem("addfav")):[];
-
-// if(showitem.length != 0){
-//     ShowLap (showitem)
-// }else{
-//     ShowLap (AllLap)
-// }
-
-function ShowLap (){
-    showitem.map((product)=>{
-        Cards.innerHTML += `
-        <div class="card" style="width: 18rem;">
-            <img src="${product.image}" class="card-img-top" alt="...">
-            <div class="card-body">
-            <h5>${product.make}</h5>
-            <h5 class="card-title"><span>${product.make} </span>${product.name}</h5>
-            <p class="card-text">${product.price} SAR</p>
-            <div class="card-btn  d-flex justify-content-around">
-                ${FavChecker(product.id) ? `<a href="#" onClick="removeFav(${product.id})" class="btn btn-primary"><i class="fa-solid fa-heart"></i></a>`: `<a href="#" onClick="addToFav(${product.id})" class="btn btn-primary"><i class="fa-solid fa-heart-circle-plus"></i></a>`}
-                ${CartChecker(product.id) ? `<a href="#" onClick="removeCart(${product.id})" class="btn btn-primary"><i class="fa-solid fa-trash"></i></a>`: `<a href="#" onClick="addToCart(${product.id})" class="btn btn-primary"><i class="fa-solid fa-cart-plus"></i></a>`}
-                
+if(Cards){
+    function ShowLap (){
+        AllLap.map((product)=>{
+            Cards.innerHTML += `
+            <div class="card" style="width: 18rem;">
+                <img src="${product.image}" class="card-img-top" alt="...">
+                <div class="card-body">
+                <h5>${product.make}</h5>
+                <h5 class="card-title"><span>${product.make} </span>${product.name}</h5>
+                <p class="card-text">${product.price} SAR</p>
+                <div class="card-btn  d-flex justify-content-around">
+                    ${FavChecker(product.id) ? `<a href="#" onClick="removeFav(${product.id})" class="btn btn-primary"><i class="fa-solid fa-heart"></i></a>`: `<a href="#" onClick="addToFav(${product.id})" class="btn btn-primary"><i class="fa-solid fa-heart-circle-plus"></i></a>`}
+                    ${CartChecker(product.id) ? `<a href="#" onClick="removeCart(${product.id})" class="btn btn-primary"><i class="fa-solid fa-trash"></i></a>`: `<a href="#" onClick="addToCart(${product.id})" class="btn btn-primary"><i class="fa-solid fa-cart-plus"></i></a>`}
+                    
+                </div>
+                </div>
             </div>
-            </div>
-        </div>
-        `
-    })
+            `
+        })
+        AllLap = y
+    }
+    ShowLap()
 }
-
 
 
 // cart
@@ -378,7 +371,7 @@ let CartProduct = document.querySelector(".cart-product ul");
 let CartBtn = document.querySelector(".cart");
 let CartMenu = document.querySelector(".cart-product");
 let NumberCart = 1
-let num = 1
+
 
 function CartChecker (id) {
     const boolean = addCart.some((item) => item.id === id)
@@ -387,27 +380,42 @@ function CartChecker (id) {
 
 let index1 = 0
 let index2 = 0
-
-
 if(addCart){
     addCart.map((product)=>{
-        CartProduct.innerHTML += `<li><img src="${product.image}" /><div><h5>${product.make} ${product.name}</h5><h4>${product.price} SAR</h4></div><div><i onClick="plusNum(${index1++})" class="fa-solid fa-plus"></i><h6 class="numproduct m-0">${product.num}</h6><i onClick="minsNum(${product.id},${index2++})" class="fa-solid fa-minus"></i></div></li>`;
+    let get = localStorage.getItem(`${product.id}`)
+    if(get == null){
+        get = 1
+    }
+        CartProduct.innerHTML += `<li><img src="${product.image}" /><div><h5>${product.make} ${product.name}</h5><h4>${product.price} SAR</h4></div><div><i onClick="plusNum(${index1++},${product.id})" class="fa-solid fa-plus"></i><h6 class="numproduct m-0">${get}</h6><i onClick="minsNum(${product.id},${index2++},${get})" class="fa-solid fa-minus"></i></div></li>`;
     })
     CartBadeg.innerHTML = addCart.length
 }
 let numproduct = document.querySelectorAll(".numproduct")
-function plusNum (ind){
-        num = ++numproduct[ind].innerHTML;
-        console.log(num)
-        numproduct[ind].innerHTML = num
+if(addCart){
+    function plusNum (ind,id){
+        let choosenItem = AllLap.find((product)=> product.id === id)
+        choosenItem.num += +1;
+        let get = localStorage.getItem(`${choosenItem.id}`)
+        localStorage.setItem(`${choosenItem.id}`, JSON.stringify(choosenItem.num))
+        get = choosenItem.num
+        numproduct[ind].innerHTML = get
+    }
 }
+
+
 function minsNum(id,ind){
-    if(num == 1){
+    let choosenItem = AllLap.find((product)=> product.id === id)
+    console.log(choosenItem)
+    if(choosenItem.num == 1){
         removeCart(id);
     }else{
-        num = --numproduct[ind].innerHTML;
-        console.log(num)
-        numproduct[ind].innerHTML = num
+        choosenItem.num += -1;
+        console.log(choosenItem)
+        let get = localStorage.getItem(`${choosenItem.id}`)
+        localStorage.setItem(`${choosenItem.id}`, JSON.stringify(choosenItem.num))
+        get = choosenItem.num
+        numproduct[ind].innerHTML = get
+        console.log(get)
     }
 }
 if(localStorage.getItem("username")){
@@ -488,12 +496,18 @@ function removeFav(id){
 let cartlist = document.getElementById("cartlist");
 if(cartlist){
     cartlist.innerHTML = addCart.map((item)=>{
+        let get = localStorage.getItem(`${item.id}`)
+        if(get == null){
+            get = 1
+        }
         return `
         <div class="card" style="width: 18rem;">
             <img src="${item.image}" class="card-img-top" alt="...">
             <div class="card-body">
-              <h5 class="card-title">${item.name}</h5>
+              <h5 class="card-title">${item.make} ${item.name}</h5>
               <p class="card-text">${item.price} SAR</p>
+              <div class="count"><i onClick="plusNum(${index1++},${item.id})" class="fa-solid fa-plus"></i><h6 class="numproduct m-0">${get}</h6><i onClick="minsNum(${item.id},${index2++},${get})" class="fa-solid fa-minus"></i></div>
+              <h5>totle :${item.price * get} SAR</h5>
               <div class="card-btn  d-flex justify-content-around">
                 <a href="#" onClick="removeCart(${item.id})" class="btn btn-primary"><i class="fa-solid fa-trash"></i></a>
                 <a href="#" class="btn btn-primary">buy now</i></a>
@@ -508,6 +522,37 @@ function removeCart(id){
     let remove = addCart.filter((product)=> product.id !== id)
     localStorage.setItem("addCart", JSON.stringify(remove))
     window.location.reload()
+}
+
+let FavItems = document.getElementById("FavItems");
+var swiper = new Swiper(".mySwiper", {
+    slidesPerView: 6,
+    spaceBetween: 30,
+    centeredSlides: true,
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+  });
+if(addfav){
+    FavItems.innerHTML = addfav.map((item)=>{
+        return `
+        <div class="swiper-slide">
+            <div class="card">
+                <img src="${item.image}" class="card-img-top" alt="...">
+                <div class="card-body">
+                <h5 class="card-title">${item.make} ${item.name}</h5>
+                <p class="card-text">${item.price} SAR</p>
+                <div class="card-btn  d-flex justify-content-around">
+                    <a href="#" onClick="removeFav(${item.id})" class="btn btn-primary"><i class="fa-solid fa-heart"></i></a>
+                    ${CartChecker(item.id) ? `<a href="#" onClick="removeCart(${item.id})" class="btn btn-primary"><i class="fa-solid fa-trash"></i></a>`: `<a href="#" onClick="addToCart(${item.id})" class="btn btn-primary"><i class="fa-solid fa-cart-plus"></i></a>`}
+                </div>
+                </div>
+            </div>
+        </div>
+        `
+    })
+
 }
 // remove from cart list
 
